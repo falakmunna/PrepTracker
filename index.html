@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PrepTrack — Study Progress Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV BAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">◈</span>
+      <span class="brand-name">PrepTrack</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-page="dashboard">Dashboard</button>
+      <button class="nav-tab" data-page="syllabus">Syllabus</button>
+      <button class="nav-tab" data-page="settings">Settings</button>
+    </div>
+  </nav>
+
+  <!-- PAGES -->
+  <main class="page-container">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1>Your Dashboard</h1>
+        <p class="page-subtitle">Track your revision sessions</p>
+      </div>
+
+      <!-- OVERALL PROGRESS CARD -->
+      <div class="overall-progress-card" id="overall-progress-card">
+        <div class="overall-left">
+          <div class="overall-circle-wrap">
+            <svg class="progress-ring" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <circle class="ring-bg" cx="60" cy="60" r="50"/>
+              <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"
+                stroke-dasharray="314.16"
+                stroke-dashoffset="314.16"
+              />
+            </svg>
+            <div class="ring-label">
+              <span class="ring-pct" id="ring-pct">0%</span>
+              <span class="ring-sub">Overall</span>
+            </div>
+          </div>
+        </div>
+        <div class="overall-right">
+          <div class="overall-title">Overall Preparation</div>
+          <div class="overall-stats" id="overall-stats">
+            <div class="ostat"><span class="ostat-val" id="ostat-subjects">0</span><span class="ostat-label">Subjects</span></div>
+            <div class="ostat"><span class="ostat-val" id="ostat-chapters">0</span><span class="ostat-label">Chapters</span></div>
+            <div class="ostat"><span class="ostat-val" id="ostat-done">0</span><span class="ostat-label">Completed</span></div>
+          </div>
+          <div class="overall-bar-wrap">
+            <div class="overall-bar-track">
+              <div class="overall-bar-fill" id="overall-bar-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subjects-list" id="dashboard-subjects">
+        <!-- Injected by JS -->
+      </div>
+      <div class="empty-state" id="dashboard-empty" style="display:none">
+        <div class="empty-icon">📚</div>
+        <p>No subjects yet. Head to <strong>Syllabus</strong> to add subjects.</p>
+      </div>
+    </div>
+
+    <!-- SYLLABUS PAGE -->
+    <div class="page" id="page-syllabus">
+      <div class="page-header">
+        <h1>Syllabus</h1>
+        <p class="page-subtitle">Manage subjects and chapters</p>
+      </div>
+
+      <div class="add-subject-form card">
+        <h3>Add Subject</h3>
+        <div class="form-row">
+          <input type="text" id="subject-name-input" placeholder="Subject name (e.g. Physics)" class="text-input" />
+          <select id="paper-select" class="select-input">
+            <option value="">No Paper</option>
+            <option value="Paper 1">Paper 1</option>
+            <option value="Paper 2">Paper 2</option>
+          </select>
+          <button class="btn btn-primary" id="add-subject-btn">+ Add</button>
+        </div>
+      </div>
+
+      <div class="syllabus-list" id="syllabus-subjects">
+        <!-- Injected by JS -->
+      </div>
+      <div class="empty-state" id="syllabus-empty" style="display:none">
+        <div class="empty-icon">🗂️</div>
+        <p>No subjects added yet. Use the form above to get started.</p>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div class="page" id="page-settings">
+      <div class="page-header">
+        <h1>Settings</h1>
+        <p class="page-subtitle">Customize your experience</p>
+      </div>
+
+      <div class="settings-section card">
+        <h3>Appearance</h3>
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Theme</div>
+            <div class="setting-desc">Switch between dark and light mode</div>
+          </div>
+          <div class="theme-toggle-wrap">
+            <button class="theme-btn active" id="theme-dark" data-theme="dark">
+              <span>🌙</span> Dark
+            </button>
+            <button class="theme-btn" id="theme-light" data-theme="light">
+              <span>☀️</span> Light
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section card">
+        <h3>Data</h3>
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">Reset All Data</div>
+            <div class="setting-desc">Clear all subjects, chapters, and progress</div>
+          </div>
+          <button class="btn btn-danger" id="reset-btn">Reset</button>
+        </div>
+      </div>
+
+      <div class="settings-section card">
+        <h3>About</h3>
+        <p class="about-text">PrepTrack v1.0 — A personal study preparation tracker. All data is stored locally in your browser.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CHAPTER PANEL (slide-in overlay) -->
+  <div class="chapter-overlay" id="chapter-overlay">
+    <div class="chapter-panel" id="chapter-panel">
+      <div class="chapter-panel-header">
+        <h2 id="chapter-panel-title">Chapters</h2>
+        <button class="close-panel-btn" id="close-panel-btn">✕</button>
+      </div>
+      <div class="chapter-panel-body" id="chapter-panel-body">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay" id="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <p id="modal-message">Are you sure?</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn btn-danger" id="modal-confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
